@@ -9,6 +9,14 @@ import {
   View,
 } from "react-native";
 
+class CountEvenNumbers extends React.Component {
+  shouldComponentUpdate(nextProps) {
+    return !(nextProps.count % 2);
+  }
+  render() {
+    return <Text style={styles.count}>{this.props.count}</Text>;
+  }
+}
 export default class App extends React.Component {
   constructor() {
     super();
@@ -27,7 +35,7 @@ export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.count}>{this.state.count}</Text>
+        <CountEvenNumbers count={this.state.count} />
       </View>
     );
   }
