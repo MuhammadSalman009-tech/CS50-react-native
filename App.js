@@ -9,15 +9,7 @@ import {
   View,
 } from "react-native";
 
-class CountEvenNumbers extends React.Component {
-  shouldComponentUpdate(nextProps) {
-    return !(nextProps.count % 2);
-  }
-  render() {
-    return <Text style={styles.count}>{this.props.count}</Text>;
-  }
-}
-export default class App extends React.Component {
+class Counter extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -25,7 +17,10 @@ export default class App extends React.Component {
     };
   }
   componentDidMount() {
-    setInterval(() => this.inc(), 1000);
+    this.interval = setInterval(() => this.inc(), 1000);
+  }
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
   inc = () => {
     this.setState((prevState) => ({
@@ -34,10 +29,39 @@ export default class App extends React.Component {
   };
   render() {
     return (
-      <View style={styles.container}>
-        <CountEvenNumbers count={this.state.count} />
+      <View>
+        <Text>{this.state.count}</Text>
       </View>
     );
+  }
+}
+export default class App extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      showCounter: true,
+    };
+  }
+  toggleCounter = () => {
+    this.setState((prevState) => ({
+      showCounter: !prevState.showCounter,
+    }));
+  };
+  render() {
+    if (this.state.showCounter) {
+      return (
+        <View style={styles.container}>
+          <Button title="Toggle" onPress={this.toggleCounter} />
+          <Counter />
+        </View>
+      );
+    } else {
+      return (
+        <View style={styles.container}>
+          <Button title="Toggle" onPress={this.toggleCounter} />
+        </View>
+      );
+    }
   }
 }
 
