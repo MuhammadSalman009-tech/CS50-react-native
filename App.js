@@ -1,7 +1,10 @@
 import { StatusBar } from "expo-status-bar";
+import Contacts, { compareNames } from "./Contacts";
 import React from "react";
+import Row from "./Row";
 import {
   Button,
+  FlatList,
   ScrollView,
   StyleSheet,
   Switch,
@@ -9,59 +12,34 @@ import {
   View,
 } from "react-native";
 
-class Counter extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      count: 0,
-    };
-  }
-  componentDidMount() {
-    this.interval = setInterval(() => this.inc(), 1000);
-  }
-  componentWillUnmount() {
-    clearInterval(this.interval);
-  }
-  inc = () => {
+export default class App extends React.Component {
+  state = {
+    showContacts: false,
+    contacts: Contacts,
+  };
+  toggleContacts = () => {
     this.setState((prevState) => ({
-      count: prevState.count + 1,
+      showContacts: !prevState.showContacts,
+    }));
+  };
+  sort = () => {
+    this.setState((prevState) => ({
+      contacts: prevState.contacts.sort(compareNames),
     }));
   };
   render() {
     return (
-      <View>
-        <Text>{this.state.count}</Text>
+      <View style={styles.toggleBtn}>
+        <Button title="Toggle Contacts" onPress={this.toggleContacts} />
+        <Button title="Sort" onPress={this.sort} />
+        {this.state.showContacts && (
+          <FlatList
+            data={this.state.contacts}
+            renderItem={({ item }) => <Row {...item} />}
+          />
+        )}
       </View>
     );
-  }
-}
-export default class App extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      showCounter: true,
-    };
-  }
-  toggleCounter = () => {
-    this.setState((prevState) => ({
-      showCounter: !prevState.showCounter,
-    }));
-  };
-  render() {
-    if (this.state.showCounter) {
-      return (
-        <View style={styles.container}>
-          <Button title="Toggle" onPress={this.toggleCounter} />
-          <Counter />
-        </View>
-      );
-    } else {
-      return (
-        <View style={styles.container}>
-          <Button title="Toggle" onPress={this.toggleCounter} />
-        </View>
-      );
-    }
   }
 }
 
@@ -74,5 +52,8 @@ const styles = StyleSheet.create({
   },
   count: {
     fontSize: 30,
+  },
+  toggleBtn: {
+    marginTop: 30,
   },
 });
