@@ -2,25 +2,30 @@ import { StatusBar } from "expo-status-bar";
 import Contacts, { compareNames } from "./Contacts";
 import React from "react";
 
-import {
-  Button,
-  SectionList,
-  ScrollView,
-  StyleSheet,
-  Switch,
-  Text,
-  View,
-} from "react-native";
+import { Button, StyleSheet, View } from "react-native";
 import ContactsList from "./ContactsList";
+import AddContact from "./AddContact";
 
 export default class App extends React.Component {
   state = {
-    showContacts: true,
+    showContacts: false,
+    showForm: false,
     contacts: Contacts,
   };
   toggleContacts = () => {
     this.setState((prevState) => ({
       showContacts: !prevState.showContacts,
+    }));
+  };
+  toggleForm = () => {
+    this.setState((prevState) => ({
+      showForm: !prevState.showForm,
+    }));
+  };
+  addContact = (newContact) => {
+    this.setState((prevState) => ({
+      showForm: false,
+      contacts: [...prevState.contacts, newContact],
     }));
   };
   sort = () => {
@@ -30,10 +35,19 @@ export default class App extends React.Component {
   };
 
   render() {
+    if (this.state.showForm) return <AddContact onSubmit={this.addContact} />;
     return (
-      <View style={styles.toggleBtn}>
-        {/* <Button title="Toggle Contacts" onPress={this.toggleContacts} />
-        <Button title="Sort" onPress={this.sort} /> */}
+      <View style={styles.app}>
+        <Button
+          style={styles.btn}
+          title="Toggle Contacts"
+          onPress={this.toggleContacts}
+        />
+        <Button
+          style={styles.btn}
+          title="Add Contact"
+          onPress={this.toggleForm}
+        />
         {this.state.showContacts && (
           <ContactsList contacts={this.state.contacts} />
         )}
@@ -43,6 +57,10 @@ export default class App extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  app: {
+    marginTop: 50,
+    padding: 10,
+  },
   container: {
     flex: 1,
     backgroundColor: "#fff",
@@ -51,8 +69,5 @@ const styles = StyleSheet.create({
   },
   count: {
     fontSize: 30,
-  },
-  toggleBtn: {
-    marginTop: 30,
   },
 });
