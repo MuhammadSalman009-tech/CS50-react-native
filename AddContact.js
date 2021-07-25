@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { Button, TextInput, View, StyleSheet } from "react-native";
+import {
+  Button,
+  TextInput,
+  View,
+  StyleSheet,
+  KeyboardAvoidingView,
+} from "react-native";
 
 const styles = StyleSheet.create({
   input: {
@@ -56,7 +62,7 @@ export default class AddContact extends Component {
   };
   render() {
     return (
-      <View style={styles.form}>
+      <KeyboardAvoidingView behavior="position" style={styles.form}>
         <TextInput
           style={styles.input}
           value={this.state.name}
@@ -73,7 +79,7 @@ export default class AddContact extends Component {
           onPress={this.handleSubmit}
           disabled={!this.state.isFormValid}
         />
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }
