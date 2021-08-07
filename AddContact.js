@@ -18,6 +18,8 @@ const styles = StyleSheet.create({
     paddingTop: 50,
     paddingLeft: 10,
     paddingRight: 10,
+    flex: 1,
+    justifyContent: "center",
   },
 });
 export default class AddContact extends Component {
@@ -47,10 +49,13 @@ export default class AddContact extends Component {
     }
   };
   validateForm = () => {
+    const names = this.state.name.split(" ");
     if (
       +this.state.phone >= 0 &&
       this.state.phone.length === 10 &&
-      this.state.name.length >= 3
+      names.length >= 2 &&
+      names[0] &&
+      names[1]
     ) {
       this.setState({ isFormValid: true });
     } else {
@@ -62,7 +67,7 @@ export default class AddContact extends Component {
   };
   render() {
     return (
-      <KeyboardAvoidingView behavior="position" style={styles.form}>
+      <KeyboardAvoidingView behavior="padding" style={styles.form}>
         <TextInput
           style={styles.input}
           value={this.state.name}

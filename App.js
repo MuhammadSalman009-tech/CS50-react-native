@@ -1,3 +1,4 @@
+<script src="http://localhost:8097"></script>;
 import { StatusBar } from "expo-status-bar";
 import Contacts, { compareNames } from "./Contacts";
 import React from "react";
