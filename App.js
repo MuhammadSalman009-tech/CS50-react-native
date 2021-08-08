@@ -9,15 +9,20 @@ function HomeScreen({ navigation }) {
       <Text>Home Screen</Text>
       <Button
         title="Go to Details"
-        onPress={() => navigation.navigate("Details")}
+        onPress={() =>
+          navigation.navigate("Details", { id: 2975, name: "Muhammad Salman" })
+        }
       />
     </View>
   );
 }
-function DetailsScreen({ navigation }) {
+function DetailsScreen({ route, navigation }) {
+  const { id, name, screen } = route.params;
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Details Screen</Text>
+      <Text>{screen}</Text>
+      <Text>ID: {id}</Text>
+      <Text>Name: {name}</Text>
       <Button
         title="Go to Details... again"
         onPress={() => navigation.push("Details")}
@@ -38,7 +43,11 @@ function App() {
           component={HomeScreen}
           options={{ title: "Overview" }}
         />
-        <Stack.Screen name="Details" component={DetailsScreen} />
+        <Stack.Screen
+          name="Details"
+          component={DetailsScreen}
+          initialParams={{ screen: "Details Sceen as a param" }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
